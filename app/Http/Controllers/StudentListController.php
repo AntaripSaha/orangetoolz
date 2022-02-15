@@ -7,8 +7,12 @@ use Illuminate\Http\Request;
 
 class StudentListController extends Controller
 {
-    public function list(){
-         $students = Student::all();
+    public function list(Request $req){
+         $students = Student::paginate(20);
+         if($req->ajax()){
+             $view = view('data', compact('students'))->render();
+             return response()->json(['html'=>$view]);
+         }
          return view('list', compact('students'));
     }
 }
